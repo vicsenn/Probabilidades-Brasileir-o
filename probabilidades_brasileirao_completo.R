@@ -159,7 +159,7 @@ iter <- list(rodada_02, rodada_30, rodada_32, rodada_34, rodada_35, rodada_36, r
 
 # Número de simulações:
 
-n <- 300
+n <- 400
 
 # Note que quanto mais rodadas precisarem ser simuladas o ideal é que esse número 'n' aumente de acordo.
 
@@ -349,15 +349,18 @@ resultados_sofisticado[,i]  <- tab3[,1]
 # Para obter as chances de campeão é só olhar quantas vezes cada time aparece na primeira linha:
 
 chances_campeao2 <- (table(resultados_sofisticado[1,])/n)*100
-barplot(chances_campeao2, main = "Probabilidades de Campeão Serie A Brasileiro 2021", ylim = c(0,110))
-text(0.7, 84, "80%")
-text(1.9, 24, "20%")
+barplot(chances_campeao2, main = "Probabilidades de Campeão Serie A Brasileiro 2021, Modelo Melhor", ylim = c(0,110), cex.main = 0.95)
+text(0.7, 84, "78%")
+text(1.9, 26, "22%")
 
 # Para ver as chances de ficar entre os 6 primeiros colocados:
 # Olhar os times que ficam entre os 6 primeiros (Libertadores e Pré-liberda, independente da Copa do Brasil)
 
-chances_libertadores2 <- sort((table(resultados_sofisticado[1:6,])/n)*100, decreasing = TRUE)
-barplot(chances_libertadores2, main = "Probabilidades de Ficar entre os 6 primeiros Serie A Brasileiro 2021", ylim = c(0,110))
+chances_libertadores2 <- sort((table(resultados_sofisticado[1:4,])/n)*100, decreasing = TRUE)
+barplot(chances_libertadores2, main = "Probabilidades de Ficar entre os 4 primeiros Serie A Brasileiro 2021", ylim = c(0,110))
+
+chances_libertadores3 <- sort((table(resultados_sofisticado[1:6,])/n)*100, decreasing = TRUE)
+barplot(chances_libertadores3, main = "Probabilidades de Ficar entre os 6 primeiros Serie A Brasileiro 2021", ylim = c(0,110))
 
 # Para o rebaixamento:
 # Verificar entre os quatro últimos (Z4):

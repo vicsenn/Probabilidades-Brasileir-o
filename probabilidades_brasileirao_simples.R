@@ -193,7 +193,7 @@ resultados_naive[,i]  <- tab3[,1]
 
 chances_campeao <- (table(resultados_naive[1,])/n)*100
 barplot(chances_campeao, main = "Probabilidades de Campeão Serie A Brasileiro 2021", ylim = c(0,110))
-text(0.7, 101, "98%")
+text(0.7, 102, "98%")
 text(1.9, 5, "2%")
 
 # Para ver as chances de ficar entre os 6 primeiros colocados:
