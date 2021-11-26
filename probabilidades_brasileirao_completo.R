@@ -293,7 +293,7 @@ t <- seq(5,8)
 for(i in s){
 for(j in t){
 	for(k in 0:9){
-		probs_mat[s+k,] <- probs[[j]][[k+1]]
+		probs_mat[i+k,] <- probs[[j]][[k+1]]
 	}
 }
 }
