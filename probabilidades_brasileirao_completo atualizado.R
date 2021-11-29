@@ -149,7 +149,7 @@ iter <- list(rodada_32, rodada_35, rodada_36, rodada_37, rodada_38)
 
 # Número de simulações:
 
-n <- 1300
+n <- 13000
 
 # Note que quanto mais rodadas precisarem ser simuladas o ideal é que esse número 'n' aumente de acordo.
 

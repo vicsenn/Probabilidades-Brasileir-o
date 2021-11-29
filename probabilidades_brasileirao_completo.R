@@ -331,8 +331,8 @@ resultados_sofisticado[,i]  <- tab3[,1]
 
 chances_campeao2 <- (table(resultados_sofisticado[1,])/n)*100
 barplot(chances_campeao2, main = "Probabilidades de Campeão Serie A Brasileiro 2021, Modelo Melhor", ylim = c(0,110), cex.main = 0.95)
-text(0.7, 85, "82%")
-text(1.9, 22, "18%")
+text(0.7, 100, "97%")
+text(1.9, 6, "3%")
 
 # Para ver as chances de ficar entre os 6 primeiros colocados:
 # Olhar os times que ficam entre os 6 primeiros (Libertadores e Pré-liberda, independente da Copa do Brasil)
