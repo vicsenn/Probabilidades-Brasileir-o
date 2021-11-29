@@ -320,6 +320,7 @@ for(i in 1:n)
 					tab2[tab2[,1] == iter[[j]][[1]][1], 2:6] <- tab2[tab2[,1] == iter[[j]][[1]][1], 2:6] + c(1,1,0,1,0)
 					tab2[tab2[,1] == iter[[j]][[1]][2], 2:6] <- tab2[tab2[,1] == iter[[j]][[1]][2], 2:6] + c(1,1,0,1,0)
 				}else{
+					tab2[tab2[,1] == ganhou, 2:6] <- tab2[tab2[,1] == ganhou, 2:6] + c(3, 1, 1, 0, 0)
 					aux <- iter[[j]][[1]][1:2]
 					perdeu <- which(aux != ganhou)
 					perdeu <- aux[perdeu]
@@ -332,6 +333,7 @@ for(i in 1:n)
 						tab2[tab2[,1] == iter[[j]][[k]][1], 2:6] <- tab2[tab2[,1] == iter[[j]][[k]][1], 2:6] + c(1,1,0,1,0)
 						tab2[tab2[,1] == iter[[j]][[k]][2], 2:6] <- tab2[tab2[,1] == iter[[j]][[k]][2], 2:6] + c(1,1,0,1,0)
 					}else{
+						tab2[tab2[,1] == ganhou, 2:6] <- tab2[tab2[,1] == ganhou, 2:6] + c(3, 1, 1, 0, 0)
 						aux <- iter[[j]][[k]][1:2]
 						perdeu <- which(aux != ganhou)
 						perdeu <- aux[perdeu]
