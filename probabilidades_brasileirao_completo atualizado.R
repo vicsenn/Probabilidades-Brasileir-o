@@ -149,7 +149,7 @@ iter <- list(rodada_32, rodada_35, rodada_36, rodada_37, rodada_38)
 
 # Número de simulações:
 
-n <- 400
+n <- 1300
 
 # Note que quanto mais rodadas precisarem ser simuladas o ideal é que esse número 'n' aumente de acordo.
 
@@ -256,20 +256,20 @@ c(tab[tab[,1] == 'ACG',4]/tab[tab[,1] == 'ACG',3], tab[tab[,1] == 'FLA',4]/tab[t
 
 # Juntando as probabilidades:
 
-probs <- list(prob_02, prob_30, prob_32, prob_34, prob_35, prob_36, prob_37, prob_38)
+probs <- list(prob_32, prob_35, prob_36, prob_37, prob_38)
 
 Sprobs <- list()
 
-for(i in 1:8){
+for(i in 1:5){
 	Sprobs[[i]] <- lapply(probs[[i]], sum)
 }
 
 probs_ls <- probs
 
-aux1 <- c(1,2,3,4, rep(5,10), rep(6,10), rep(7,10), rep(8,10))
-aux2 <- c(rep(1,4),rep(1:10,4))
+aux1 <- c(1, rep(2,6), rep(3,10), rep(4,10), rep(5,10))
+aux2 <- c(1, 1:6,rep(1:10,3))
 
-for(i in 1:44){
+for(i in 1:37){
 	probs_ls[[aux1[i]]][[aux2[i]]] <- unlist(probs[[aux1[i]]][[aux2[i]]])/unlist(Sprobs[[aux1[i]]][[aux2[i]]])
 }
 
@@ -285,7 +285,7 @@ for(i in 1:n)
 
 	tab2 <- tab[,-c(7,8,9,10)]
 
-	for(j in 1:44)
+	for(j in 1:37)
 	{
 		result1 <- sample(iter[[aux1[j]]][[aux2[j]]], size = 3, prob = probs_ls[[aux1[j]]][[aux2[j]]])
 		if(result1[1] == "EMP")
@@ -311,8 +311,8 @@ resultados_sofisticado[,i]  <- tab3[,1]
 
 chances_campeao2 <- sort((table(resultados_sofisticado[1,])/n)*100, decreasing = TRUE)
 barplot(chances_campeao2[1:2], main = "Probabilidades de Campeão Serie A Brasileiro 2021, Modelo Melhor", ylim = c(0,110), cex.main = 0.95)
-text(0.7, 87, "83.25%")
-text(1.9, 21, "16.75%")
+text(0.7, 102, "99%")
+text(1.9, 4, "1%")
 
 # Para ver as chances de ficar entre os 6 primeiros colocados:
 # Olhar os times que ficam entre os 6 primeiros (Libertadores e Pré-liberda, independente da Copa do Brasil)
@@ -327,6 +327,6 @@ barplot(chances_libertadores3, main = "Probabilidades de Ficar entre os 6 primei
 # Verificar entre os quatro últimos (Z4):
 
 chances_rebaixamento2 <- sort((table(resultados_sofisticado[17:20,])/n)*100, decreasing = TRUE)
-barplot(chances_rebaixamento2[1:15], main = "Probabilidades de Ficar entre os 4 últimos Serie A Brasileiro 2021", ylim = c(0,110))
+barplot(chances_rebaixamento2, main = "Probabilidades de Ficar entre os 4 últimos Serie A Brasileiro 2021", ylim = c(0,110))
 
 ## FIM DA ROTINA!
