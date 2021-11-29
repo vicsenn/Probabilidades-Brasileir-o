@@ -159,7 +159,7 @@ iter <- list(rodada_02, rodada_30, rodada_32, rodada_34, rodada_35, rodada_36, r
 
 # Número de simulações:
 
-n <- 400
+n <- 13000
 
 # Note que quanto mais rodadas precisarem ser simuladas o ideal é que esse número 'n' aumente de acordo.
 
@@ -278,74 +278,53 @@ c(tab[tab[,1] == 'ACG',4]/tab[tab[,1] == 'ACG',3], tab[tab[,1] == 'FLA',4]/tab[t
 
 probs <- list(prob_02, prob_30, prob_32, prob_34, prob_35, prob_36, prob_37, prob_38)
 
-# Vamos transformar PROBS em uma matriz:
+Sprobs <- list()
 
-probs_mat <- matrix(0, nrow = 44, ncol = 3)
-
-probs_mat[1,] <- probs[[1]][[1]]
-probs_mat[2,] <- probs[[2]][[1]]
-probs_mat[3,] <- probs[[3]][[1]]
-probs_mat[4,] <- probs[[4]][[1]]
-
-s <- seq(5,44, by = 10)
-t <- seq(5,8)
-
-for(i in s){
-for(j in t){
-	for(k in 0:9){
-		probs_mat[i+k,] <- probs[[j]][[k+1]]
-	}
-}
+for(i in 1:8){
+	Sprobs[[i]] <- lapply(probs[[i]], sum)
 }
 
-# Para deixar essas chances entre zero e um:
+probs_ls <- probs
 
-somasprob <- apply(probs_mat, MARGIN = 1, FUN = sum)
-probs_mat <- probs_mat/somasprob
+aux1 <- c(1,2,3,4, rep(5,10), rep(6,10), rep(7,10), rep(8,10))
+aux2 <- c(rep(1,4),rep(1:10,4))
 
-# Essa simulação que leva em conta os aproveitamentos dos times:
+for(i in 1:44){
+	probs_ls[[aux1[i]]][[aux2[i]]] <- unlist(probs[[aux1[i]]][[aux2[i]]])/unlist(Sprobs[[aux1[i]]][[aux2[i]]])
+}
 
 resultados_sofisticado <- matrix(0, nrow = 20, ncol = n)
 
-# Tá demorando um pouco, não está muito eficiente o Loop abaixo, usando apenas lista fica mais rápido, mas não corrige as probabilidades (o que não é muito necessário)
+# Deixei o Loop mais eficiente:
+
+result1 <- NULL
 
 for(i in 1:n)
 {
-	tab2 <- tab[,-c(7,8,9,10)]
-	for(z in 1:44){
-	for(j in 1:8){
-		if(j <= 4){
-			ganhou <- sample(iter[[j]][[1]], size = 1, prob = probs_mat[z,])
-				if(ganhou == "EMP"){
-					tab2[tab2[,1] == iter[[j]][[1]][1], 2:6] <- tab2[tab2[,1] == iter[[j]][[1]][1], 2:6] + c(1,1,0,1,0)
-					tab2[tab2[,1] == iter[[j]][[1]][2], 2:6] <- tab2[tab2[,1] == iter[[j]][[1]][2], 2:6] + c(1,1,0,1,0)
-				}else{
-					tab2[tab2[,1] == ganhou, 2:6] <- tab2[tab2[,1] == ganhou, 2:6] + c(3, 1, 1, 0, 0)
-					aux <- iter[[j]][[1]][1:2]
-					perdeu <- which(aux != ganhou)
-					perdeu <- aux[perdeu]
-					tab2[tab2[,1] == perdeu, 2:6] <- tab2[tab2[,1] == perdeu, 2:6] + c(0, 1, 0, 0, 1)
-				}
-			}else{
-				for(k in 1:10){
-					ganhou <- sample(iter[[j]][[k]], size = 1, prob = probs_mat[z,])
-					if(ganhou == "EMP"){
-						tab2[tab2[,1] == iter[[j]][[k]][1], 2:6] <- tab2[tab2[,1] == iter[[j]][[k]][1], 2:6] + c(1,1,0,1,0)
-						tab2[tab2[,1] == iter[[j]][[k]][2], 2:6] <- tab2[tab2[,1] == iter[[j]][[k]][2], 2:6] + c(1,1,0,1,0)
-					}else{
-						tab2[tab2[,1] == ganhou, 2:6] <- tab2[tab2[,1] == ganhou, 2:6] + c(3, 1, 1, 0, 0)
-						aux <- iter[[j]][[k]][1:2]
-						perdeu <- which(aux != ganhou)
-						perdeu <- aux[perdeu]
-						tab2[tab2[,1] == perdeu, 2:6] <- tab2[tab2[,1] == perdeu, 2:6] + c(0, 1, 0, 0, 1)
-					}
-				}
-			}
-	}
-	}
+	# Uma tabela sem GP, SC e Saldo nos será mais útil no momento:
 
+	tab2 <- tab[,-c(7,8,9,10)]
+
+	for(j in 1:44)
+	{
+		result1 <- sample(iter[[aux1[j]]][[aux2[j]]], size = 3, prob = probs_ls[[aux1[j]]][[aux2[j]]])
+		if(result1[1] == "EMP")
+		{
+			tab2[tab2[,1] == result1[2], 2:6] <- tab2[tab2[,1] == result1[2], 2:6] + c(1,1,0,1,0)
+			tab2[tab2[,1] == result1[3], 2:6] <- tab2[tab2[,1] == result1[3], 2:6] + c(1,1,0,1,0)
+		}else
+		{
+			ganhou <- result1[1]
+			tab2[tab2[,1] == ganhou, 2:6] <- tab2[tab2[,1] == ganhou, 2:6] + c(3, 1, 1, 0, 0)
+			perdeu <- which(result1 == "EMP")
+			perdeu <- result1[-perdeu]
+			perdeu <- perdeu[2]
+			tab2[tab2[,1] == perdeu, 2:6] <- tab2[tab2[,1] == perdeu, 2:6] + c(0, 1, 0, 0, 1)
+		}
+
+	}	
 tab3 <- tab2[order(tab2[,2], tab2[,4], decreasing = TRUE),]
-resultados_sofisticado[,i]  <- tab3[,1]	
+resultados_sofisticado[,i]  <- tab3[,1]
 }
 
 # Para obter as chances de campeão é só olhar quantas vezes cada time aparece na primeira linha:
