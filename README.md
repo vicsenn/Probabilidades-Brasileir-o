@@ -22,6 +22,9 @@
 #		 Para maiores detalhes ou dúvidas entre em contato com o autor que aparece no e-mail acima.
 # 
 # OBS.2: 
-#   Essa Rotina foi gerada primordialmente no R 4.3.1 para Linux Mint (Una-MATE), 64 Bits, para rodá-la em outros sistemas operacionais alguns detalhes devem ser observados.
+#   Essa Rotina foi gerada primordialmente no R 4.3.1 para Linux Mint (Una-MATE), 64 Bits, para rodá-la em outros SOs alguns detalhes devem ser observados.
+#
+# OBS.3:
+# Criei uma atualização para considerar melhor o desempate de saldo de gols. Não é, na verdade, o saldo de gols, mas simplesmente uma série binomial (0s e 1s) com # n = 20 (os 20 times do brasileirão). Acho que já deve ser bom o suficiente, em especial quando os times estão com saldos similares. No futuro deve ser possível # desenvolver um critério de desempate que leve em conta o saldo existente. Grato ao meu primo, Henrique Maia Menezes, por me apontar essa questão de critérios de # desempate, bastante relevante para o campeonato de 2023. Considere então que os códigos de 2021 estão sem esse desempate para além do número de vitórias e o     # novo código de 2023 já possui o critério de desempate aleatório mais simples. 
 #
 ###################################################################################################################################################################
