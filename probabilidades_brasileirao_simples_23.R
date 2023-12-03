@@ -5,7 +5,7 @@
 #
 # AUTOR: VICTOR MAIA S. DELGADO (UFOP)
 # e-mail: victor.delgado@ufop.edu.br (Victor)
-# DATA da última versão: 02/12/2023
+# DATA da última versão: 03/12/2023
 # CPU 1:      Desktop HP; processor i7-3770 @ 3.40GHz, RAM: 16.0 GB
 #  OS 1:      Windows 7 Professional
 # CPU 2:      ACER Aspire E5-573G; processor i7-5500U @ 2.40GHz, RAM: 8.0 GB
@@ -132,6 +132,9 @@ for(i in 1:n)
 	# Uma tabela sem GP, SC e Saldo nos será mais útil no momento:
 
 	tab2 <- tab[,-c(7,8,9,10)]
+	desempate_1 <- rbinom(n = 20, size = 1, prob = 0.5)
+	desempate_2 <- rbinom(n = 20, size = 1, prob = 0.5)
+	tab2[,7:8] <- cbind(desempate_1, desempate_2)
 
 	for(j in 1:2)
 	{
@@ -150,7 +153,7 @@ for(i in 1:n)
 			}
 		}
 	}
-tab3 <- tab2[order(tab2[,2], tab2[,4], decreasing = TRUE),]
+tab3 <- tab2[order(tab2[,2], tab2[,4], tab2[,7], tab2[,8], decreasing = TRUE),]
 resultados_naive[,i]  <- tab3[,1]
 }
 
@@ -158,11 +161,11 @@ resultados_naive[,i]  <- tab3[,1]
 
 chances_campeao <- (table(resultados_naive[1,])/n)*100
 barplot(chances_campeao, main = "Probabilidades de Campeão Serie A Brasileiro 2023", ylim = c(0,110))
-text(0.7, 7, "4%")
-text(1.9, 34, "31%")
-text(3.1, 6.5, "3.5%")
+text(0.7, 10, "6.5%")
+text(1.9, 27, "24%")
+text(3.1, 9, "6%")
 text(4.35, 5.5, "2.5%")
-text(5.5, 62, "59%")
+text(5.5, 64, "61%")
 
 # Para ver as chances de ficar entre os 6 primeiros colocados:
 # Olhar os times que ficam entre os 6 primeiros (Libertadores e Pré-liberda, independente da Copa do Brasil)
@@ -178,10 +181,10 @@ barplot(chances_rebaixamento, main = "Probabilidades de Ficar entre os 4 último
 text(0.7, 102, "100%")
 text(1.9, 102, "100%")
 text(3.1, 102, "100%")
-text(4.35, 61, "58%")
-text(5.5, 31, "28%")
-text(6.7, 16, "13%")
-text(7.9, 5, "1%")
+text(4.35, 57, "54%")
+text(5.5, 32, "29%")
+text(6.7, 18, "15%")
+text(7.9, 5, "2%")
 text(9.1, 3, "~0%")
 
 ## FIM DA ROTINA!
