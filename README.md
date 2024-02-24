@@ -1,7 +1,7 @@
 ############################################################################################################################################################################
 #
-# ROTINA PARA GERAR PROBABILIDADES DOS CAMPEÕES DO BRASILEIRA - SERIE A
-# Dois Scripts para Calcular as Probabilidades de Vitória dos times no Brasileirão.
+# ROTINA PARA GERAR PROBABILIDADES DOS CAMPEÕES EM CAMPEONATOS DE XADREZ FORMATO SUÍÇO
+# Scripts para Calcular as Probabilidades de Vitória dos jogadores 
 #
 # Rotina em R
 #
