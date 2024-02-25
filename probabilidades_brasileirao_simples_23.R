@@ -1,19 +1,22 @@
 ###################################################################################################################
 #
-# ROTINA PARA GERAR PROBABILIDADES DOS CAMPEÕES DO BRASILEIRA - SERIE A
+# ROTINA PARA GERAR PROBABILIDADES DOS CAMPEÕES DA LIGA GRAND PRIX DO CLUBE DE XADREZ DE PEÇANHA - SERIE A, B e C
 # Rotina em R
 #
 # AUTOR: VICTOR MAIA S. DELGADO (UFOP)
 # e-mail: victor.delgado@ufop.edu.br (Victor)
-# DATA da última versão: 03/12/2023
-# CPU 1:      Desktop HP; processor i7-3770 @ 3.40GHz, RAM: 16.0 GB
-#  OS 1:      Windows 7 Professional
-# CPU 2:      ACER Aspire E5-573G; processor i7-5500U @ 2.40GHz, RAM: 8.0 GB
-#  OS 2:      Windows 10 Home Single Language
+#
+# DATA da última versão: 24/02/2024
+# CPU 1:      ASUS; processor intel Xeon CPU X3430 @ 2.40GHz x4, RAM: 16.0 GB
+#  OS 1:      Linux Mint 20.3 Una 64-bit
+#
 # Versão R: 4.3.1(x64) 
 #
-# OBS.1: Rotina para gera as chances dos times de acordo com técnicas naïve, 
-# 		 os pareamentos (qual time enfrenta qual) não importam.
+# OBS.1: Rotina para gera as chances dos jogadores de acordo com o ELO-Chess em rápidas de cada um,
+#                E_b = Esperança de vitória do jogador de brancas
+#                E_p = Esperança de vitória do jogador de pretas
+#                Q_b = Cálculo da força relativa, baseada no rating, para jogador das brancas Q_b = 10^(R_b/400) 
+#                Q_p = Cálculo da força relativa, baseada no rating, para jogador das pretas Q_p = 10^(R_p/400)
 #		 Para maiores detalhes ou dúvidas entre em contato com o autor que aparece no e-mail acima.
 # OBS.2: Essa Rotina foi gerada primordialmente no R 4.3.1 para Linux Mint (UnA-MATE), 64 Bits, para rodá-la em outros sistemas operacionais alguns detalhes devem ser observados.
 #
@@ -23,52 +26,25 @@
 
 # Ordem alfabética dos times:
 
-times <- c('America', 'Atletico', 'Athletico', 'Bahia', 'Botafogo', 'Bragantino', 'Corinthians', 'Coritiba', 'Cruzeiro', 'Cuiaba',
-	'Flamengo', 'Fluminense', 'Fortaleza', 'Goias', 'Gremio', 'Internacional', 'Palmeiras', 'Santos', 'Sao Paulo', 'Vasco')
-
-# Abreviatura dos times:
-
-abr <- c('AME', 'CAM', 'CAP', 'BAH', 'BOT', 'BGT', 'COR', 'CTB', 'CRU', 'CUI', 'FLA', 'FLU', 'FOR', 'GOI', 'GRE', 'INT', 'PAL', 'SAN', 'SAO', 'VAS')
+serieA <- c('Vigg-Sama', 'Hyoukami', 'DouglasRoots', 'ronyfreitas', 'olivmaicon33', 'jardindemonet', 'Alexcapas', 'Alanpsc', 'Careca_De_Capa', 'BispodaAvareza',
+	'luancarlison', 'Sovinski', 'Dragon-dorf', 'denis_duarte', 'AkiYuuto', 'FelipeViana')
 
 # Pontos na rodada atual de acordo com a oderm alfabética
 
-pontos <- c(21, 66, 53, 41, 63, 59, 47, 30, 45, 48, 63, 56, 48, 35, 62, 52, 66, 43, 50, 42)
+pontosA <- c(5, 2, 2.5, 3, 3, 3, 0, 1, 4, 3, 2.5, 2, 2, 1.5, 2.5, 1, 2)
+A_TB1 <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+A_TB2 <- c(12.5, 12.5, 14.5, 12, 10.5, 10, 14, 13, 10, 12, 11, 10.5, 10, 11, 12, 8)
+A_TB3 <- c(15, 13.5, 16.5, 14, 11.5, 12, 16.5, 14, 11, 14, 11, 10.5, 10, 11, 12, 9)
 
 # Vamos fazer uma tabela de acordo com a classificação:
 
-tab <- data.frame(matrix(c(abr, pontos), nrow = 20, ncol = 2))
-names(tab) <- c("equipe", "pontos")
+tabA <- data.frame(matrix(c(seriaA, pontosA, A_TB1, A_TB2, A_TB3), nrow = 16, ncol = 2))
+names(tabA) <- c("jogador", "pontos", "TB1", "TB2", "TB3")
 
-# Para ordenar pelos pontos,
-# Ainda não tem critério de desempate:
+# Reordenando com os critérios de desempate:
 
-# AQUI há mais imputs importantes, repare que já está quase na ordem da tabela porém sem critério de desempate.
-
-tab <- tab[order(tab[,2], decreasing = TRUE),]
-rodadas <- c(37, 36, 36, 36, 36, 36, 36, 36, 37, 37, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36)
-vitorias <- c(19, 19, 18, 18, 19, 16, 16, 13, 14, 13, 13, 13, 11, 11, 11, 11, 11, 8, 8, 4)
-empates <- c(9, 9, 9, 9, 5, 11, 8, 14, 10, 11, 9, 9, 14, 12, 10, 9, 8, 11, 6, 9)
-derrotas <- rodadas - (vitorias + empates)
-
-# Juntando na tabela:
-
-tab <- cbind(tab, rodadas, vitorias, empates, derrotas)
-
-# Reordenando com critério de vitórias como desempate:
-
-tab <- tab[order(tab[,2], tab[,4], decreasing = TRUE),]
-rownames(tab) <- 1:nrow(tab)
-
-# Em alguns casos o critério de vitórias não é suficiente então para o Saldo de Gols, mais dois vetores de inputs:
-# Atenção à ordem dos dados:
-
-GP <- c(51, 62, 57, 54, 59, 47, 49, 48, 43, 39, 36, 42, 45, 34, 38, 39, 44, 35, 41, 39) # Gols Pro
-GC <- c(28, 32, 34, 40, 54, 33, 43, 40, 44, 38, 37, 43, 48, 31, 59, 49, 49, 52, 70, 78) # Gols Contra
-Saldo <- GP - GC
-
-# Juntando na tabela do brasileirão:
-
-tab <- cbind(tab, GP, GC, Saldo)
+tabA <- tabA[order(tabA[,2], tabA[,4], decreasing = TRUE),]
+rownames(tabA) <- 1:nrow(tabA)
 
 # Corrigindo o fato de que o valor dos pontos não ficou como número na minha tabela:
 
