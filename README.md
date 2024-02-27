@@ -14,8 +14,10 @@
 # OBS.1: 
 #   Essa Rotina foi gerada primordialmente no R 4.3.1 para Linux Mint (Una-MATE), 64 Bits, para rodá-la em outros SOs alguns detalhes devem ser observados.
 # OBS.2:
-#   As probabilidades de vitória foram calculadas segundo a logística ELO com E_b = Q_b/(Q_b + Q_p) e Q_b = 10^(R_b/400)
-#   E_b expectativa de vitória das Brancas e Q_b conta auxiliar.
+#   As probabilidades de vitória foram calculadas segundo a logística ELO com E_b = Q_b/(Q_b + k + Q_p) e Q_b = 10^(R_b/400)
+#   E_b expectativa de vitória das Brancas e Q_b para conta auxiliar.
+#   O k é um parâmetro para os empates.
+#   Com os Ratings de Peçanha CXP.
 #   O mesmo pode ser feito para E_p e Q_p paras pretas
 #
 ###################################################################################################################################################################
